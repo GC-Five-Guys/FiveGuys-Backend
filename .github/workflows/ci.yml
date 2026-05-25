@@ -15,12 +15,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
       - name: Check if package.json exists
         id: check_pkg
         run: |
@@ -30,6 +24,19 @@ jobs:
             echo "exists=false" >> $GITHUB_OUTPUT
             echo "⚠️  package.json not found. Skipping install/lint/test."
           fi
+
+      - name: Setup Node.js (with cache)
+        if: steps.check_pkg.outputs.exists == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Setup Node.js (no cache)
+        if: steps.check_pkg.outputs.exists == 'false'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
 
       - name: Install dependencies
         if: steps.check_pkg.outputs.exists == 'true'
