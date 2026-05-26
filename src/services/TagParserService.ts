@@ -2,7 +2,7 @@
 export type ParseResult = {
     mentions: string[];
     tags: string[];
-    objects: String[];
+    objects: string[];
 };
 
 export const parseTags = (content: string): ParseResult => {
