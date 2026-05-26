@@ -1,0 +1,13 @@
+node_modules/
+
+# 로그 파일
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IntelliJ / WebStorm 에디터 개인 설정 파일
+.idea/
+*.iml
+
+# Mac OS 시스템 파일 (팀원이 맥북을 쓸 경우를 대비)
+.DS_Store

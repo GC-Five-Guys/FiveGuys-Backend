@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es2022",       // Node.js 20 버전에 맞는 최신 자바스크립트로 변환합니다.
+    "module": "commonjs",     // Node.js의 기본 모듈 시스템을 사용합니다.
+    "rootDir": "./src",       // 우리가 작성할 소스 코드의 위치입니다.
+    "outDir": "./dist",       // 빌드된 결과물이 저장될 위치입니다.
+    "strict": true,           // 엄격한 타입 검사를 켭니다. (any 금지, null 체킹 등)
+    "esModuleInterop": true,  // CommonJS와 ES Module 간의 호환성을 높여줍니다.
+    "skipLibCheck": true,     // 외부 라이브러리 내부의 타입 검사는 건너뛰어 빌드 속도를 높입니다.
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*"]     // src 폴더 안의 모든 파일을 컴파일 대상으로 삼습니다.
+}
