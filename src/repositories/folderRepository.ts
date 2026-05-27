@@ -26,3 +26,10 @@ export const updateFolder = async (id: string, updateData: any) => {
 export const deleteFolder = async (id: string) => {
     return await Folder.findByIdAndDelete(id);
 };
+
+export const searchFoldersByName = async (userId: string, keyword: string) => {
+    return await Folder.find({
+        user_id: userId,
+        name: { $regex: keyword, $options: 'i' }
+    });
+};

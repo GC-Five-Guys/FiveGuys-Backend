@@ -41,3 +41,25 @@ export const deleteNote = async (id: string) => {
 export const moveNotesToNewFolder = async (oldFolderId: string, newFolderId: string | null) => {
     return await Document.updateMany({ folder_id: oldFolderId }, { $set: { folder_id: newFolderId } });
 };
+
+// 키워드 검색 (제목 검색 모드 vs 태그 필터 모드 분리)
+export const searchNotesByKeyword = async (userId: string, keyword: string, tokenType?: string) => {
+    // 버튼을 눌렀을 때 (태그 필터 모드): 임베드된 nodes 배열 안에서 정확한 타입과 라벨을 찾는다
+    if (tokenType) {
+        return await Document.find({
+            user_id: userId,
+            nodes: { 
+                $elemMatch: { 
+                    label: { $regex: keyword, $options: 'i' }, 
+                    token_type: tokenType 
+                } 
+            }
+        }).select('title date folder_id');
+    }
+
+    // 버튼을 누르지 않았을 때 (제목 검색 모드): 오직 제목(title)만 검색
+    return await Document.find({
+        user_id: userId,
+        title: { $regex: keyword, $options: 'i' }
+    }).select('title date folder_id');
+};

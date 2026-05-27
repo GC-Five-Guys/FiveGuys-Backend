@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 
 const FolderSchema = new Schema({
-    user_id: {type: Schema.Types.ObjectId, ref: 'User'},
+    user_id: {type: Schema.Types.ObjectId, required: true, ref: 'User'},
     // parent_id가 null 이면 최상위 (root) 폴더를 의미
     parent_id: {type: Schema.Types.ObjectId, default: null, ref: 'Folder'},
     name: {type: String, required: true, maxlength: 50},
