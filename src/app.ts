@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import noteRoutes from "./routes/noteRoutes";
+import folderRoutes from "./routes/folderRoutes";
 
 // 1. Express 어플리케이션 인스턴스 생성
 const app : Application = express();
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use(cors());
 // API 엔드포인트 연결.
 app.use('/api/v1/notes', noteRoutes);
+app.use('/api/v1/folders', folderRoutes);
 
 // 3. 헬스 체크 API ( 서버가 잘 열려 있는지 확인하는 요청 )
 app.get('/api/v1/health', (req: Request, res: Response) => {

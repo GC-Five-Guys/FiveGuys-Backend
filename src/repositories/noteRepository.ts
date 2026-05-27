@@ -15,6 +15,18 @@ export const findNoteById = async (id: string) => {
     return await Document.findById(id)
 };
 
+// [Read] 특정 날짜의 노트 조회 (1인 1일 1노트 확인용)
+export const findNoteByDate = async (userId: string, date: string) => {
+    return await Document.findOne({ user_id: userId, date });
+};
+
+// [Read] 특정 폴더 내의 노트 조회
+export const findNotesByFolderId = async (userId: string, folderId: string | null) => {
+    return await Document.find({ user_id: userId, folder_id: folderId })
+        .select('-content -nodes -relationships')
+        .sort({ updated_at: -1 });
+};
+
 // 4. [Update] 파일 수정
 export const updateNote = async (id: string, updateData: any) => {
   return await Document.findByIdAndUpdate(id, updateData, { new: true });
@@ -23,4 +35,9 @@ export const updateNote = async (id: string, updateData: any) => {
 // 5. [Delete] 삭제
 export const deleteNote = async (id: string) => {
     return await Document.findByIdAndDelete(id);
+};
+
+// [Update] 특정 폴더에 속한 모든 노트의 folder_id를 새로운 부모 폴더 ID로 일괄 변경 (폴더 삭제 대비)
+export const moveNotesToNewFolder = async (oldFolderId: string, newFolderId: string | null) => {
+    return await Document.updateMany({ folder_id: oldFolderId }, { $set: { folder_id: newFolderId } });
 };

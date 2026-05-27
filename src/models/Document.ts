@@ -18,6 +18,7 @@ const NodeSchema = new Schema({
 const DocumentSchema = new Schema({
     user_id: { type: Schema.Types.ObjectId, required: true, ref: 'User' },  // User 모델을 참조
     folder_id: { type: Schema.Types.ObjectId, default: null, ref: 'Folder' },
+    date: { type: String, required: true }, // "YYYY-MM-DD" 포맷
     title: { type: String, required: true, maxlength: 200 },
     content: { type: String, required: true, maxlength: 50000 },
     is_public: { type: Boolean, default: false },
@@ -34,5 +35,8 @@ const DocumentSchema = new Schema({
 }, {
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
 });
+
+// 1인 1일 1노트 규칙을 위한 복합 고유 인덱스 설정
+DocumentSchema.index({ user_id: 1, date: 1 }, { unique: true });
 
 export const Document = model("Document", DocumentSchema);
