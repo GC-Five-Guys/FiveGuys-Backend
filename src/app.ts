@@ -3,6 +3,7 @@ import cors from 'cors';
 import noteRoutes from "./routes/noteRoutes";
 import folderRoutes from "./routes/folderRoutes";
 import searchRoutes from "./routes/searchRoutes";
+import authRoutes from "./routes/authRoutes";
 
 // 1. Express 어플리케이션 인스턴스 생성
 const app : Application = express();
@@ -16,6 +17,7 @@ app.use(cors());
 app.use('/api/v1/notes', noteRoutes);
 app.use('/api/v1/folders', folderRoutes);
 app.use('/api/v1/search', searchRoutes);
+app.use('/api/v1/auth', authRoutes);
 
 // 3. 헬스 체크 API ( 서버가 잘 열려 있는지 확인하는 요청 )
 app.get('/api/v1/health', (req: Request, res: Response) => {

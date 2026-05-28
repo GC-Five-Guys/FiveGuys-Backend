@@ -1,11 +1,9 @@
 import * as folderRepository from '../repositories/folderRepository';
 import * as noteRepository from '../repositories/noteRepository';
 
-const tempUserId = '664a12341234123412341234';
-
-export const createFolder = async (name: string, parent_id?: string, order?: number) => {
+export const createFolder = async (userId: string, name: string, parent_id?: string, order?: number) => {
     return await folderRepository.createFolder({
-        user_id : tempUserId,
+        user_id : userId,
         name,
         parent_id : parent_id || null,
         order : order || 0
@@ -13,8 +11,8 @@ export const createFolder = async (name: string, parent_id?: string, order?: num
 };
 
 // DB에서 일렬로 가져온 데이터를 중첩된 Tree 구조로 조립
-export const getFolderTree = async () => {
-    const folders = await folderRepository.findFoldersByUserId(tempUserId);
+export const getFolderTree = async (userId: string) => {
+    const folders = await folderRepository.findFoldersByUserId(userId);
     // Mongoose 문서를 일반 자바스크립트 객체로 변환
     const folderList = folders.map(f => f.toObject());
     const map = new Map();

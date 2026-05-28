@@ -1,11 +1,16 @@
 import { Request, Response } from 'express';
 import * as folderService from '../services/folderService';
 
+interface AuthRequest extends Request {
+    user?: any;
+}
+
 // 1. 폴더 생성
-export const createFolder = async (req: Request, res: Response) => {
+export const createFolder = async (req: AuthRequest, res: Response) => {
     try {
         const { name, parent_id, order } = req.body;
-        const newFolder = await folderService.createFolder(name, parent_id, order);
+        const userId = req.user._id.toString();
+        const newFolder = await folderService.createFolder(userId, name, parent_id, order);
         res.status(201).json({ success: true , data: newFolder });
     } catch (error) {
         res.status(500).json({success: false, message: 'Failed to create folder.'});
@@ -13,9 +18,10 @@ export const createFolder = async (req: Request, res: Response) => {
     }
 };
 // 2. 폴더 조회
-export const getFolder = async (req: Request, res: Response) => {
+export const getFolder = async (req: AuthRequest, res: Response) => {
     try {
-        const tree = await folderService.getFolderTree();
+        const userId = req.user._id.toString();
+        const tree = await folderService.getFolderTree(userId);
         res.status(200).json({ success: true, data: { tree } });
     } catch (error) {
         res.status(500).json({success: false, message: 'Failed to get folder.'});

@@ -1,12 +1,19 @@
 import { Request, Response } from 'express';
 import * as noteService from '../services/noteService';
 
+// AuthRequest 타입을 임시로 정의 (req.user를 쓰기 위함)
+interface AuthRequest extends Request {
+    user?: any;
+}
+
 // 1. 노트 생성 컨트롤러
-export const createNote = async (req: Request, res: Response) => {
+export const createNote = async (req: AuthRequest, res: Response) => {
     try {
         const { title, content, date } = req.body;
+        const userId = req.user._id.toString(); // authGuard가 넣어준 진짜 유저 ID
+        
         // Service에게 요청
-        const newNote = await noteService.createNote(title, content, date);
+        const newNote = await noteService.createNote(userId, title, content, date);
         res.status(201).json({success: true, data: newNote});
     } catch (error: any) {
         console.error('Controller Error: ', error);
@@ -17,10 +24,12 @@ export const createNote = async (req: Request, res: Response) => {
     }
 };
 // 2. 목록 조회 (날짜 및 폴더 필터링 반영)
-export const getNotes = async (req: Request, res: Response) => {
+export const getNotes = async (req: AuthRequest, res: Response) => {
     try {
         const { date, folder_id } = req.query; 
-        const notes = await noteService.getNotes(date as string, folder_id as string);
+        const userId = req.user._id.toString();
+
+        const notes = await noteService.getNotes(userId, date as string, folder_id as string);
         res.status(200).json({ success: true, data: notes });
     } catch (error) {
         console.error('Controller Error: ', error);
