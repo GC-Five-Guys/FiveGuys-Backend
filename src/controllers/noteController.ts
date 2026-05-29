@@ -39,7 +39,7 @@ export const getNotes = async (req: Request, res: Response) => {
 // 3. 상세 조회
 export const getNoteDetail = async (req: Request, res: Response) => {
     try {
-        const note = await noteService.getNoteDetail(req.params.id)
+        const note = await noteService.getNoteDetail(req.params.id as string)
         if (!note) return res.status(404).json({success: false, message: 'Not Found this note.'});
         res.status(200).json({success: true, data: note});
     } catch (error) {
@@ -51,7 +51,7 @@ export const getNoteDetail = async (req: Request, res: Response) => {
 export const updateNote = async (req: Request, res: Response) => {
     try {
         const { title, content } = req.body
-        const updatedNote = await noteService.updateNote(req.params.id , title, content);
+        const updatedNote = await noteService.updateNote(req.params.id as string, title, content);
         res.status(200).json({success: true, data: updatedNote});
     } catch (error) {
         console.error('Controller Error: ', error);
@@ -63,7 +63,7 @@ export const updateNote = async (req: Request, res: Response) => {
 export const updateNotePartial = async (req: Request, res: Response) => {
     try {
         // Body에 담겨온 변경사항들 (예: folder_id)
-        const updatedNote = await noteService.updateNotePartial(req.params.id, req.body);
+        const updatedNote = await noteService.updateNotePartial(req.params.id as string, req.body);
         res.status(200).json({ success: true, data: updatedNote });
     } catch (error) {
         console.error('Controller Error: ', error);
@@ -74,7 +74,7 @@ export const updateNotePartial = async (req: Request, res: Response) => {
 // 6. 삭제 하기 (DELETE)
 export const deleteNote = async (req: Request, res: Response) => {
     try {
-        await noteService.deleteNote(req.params.id);
+        await noteService.deleteNote(req.params.id as string);
         res.status(204).send(); // 204 No Content: 삭제 성공. 돌려줄 본문은 없음
     } catch (error) {
         console.error('Controller Error: ', error);

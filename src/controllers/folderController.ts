@@ -32,7 +32,7 @@ export const getFolder = async (req: Request, res: Response) => {
 export const updateFolder = async (req: Request, res: Response) => {
     try {
         const { name, parent_id, order } = req.body;
-        const updatedFolder = await folderService.updateFolder(req.params.id, name, parent_id, order);
+        const updatedFolder = await folderService.updateFolder(req.params.id as string, name, parent_id, order);
         res.status(200).json({ success: true, data: updatedFolder });
     } catch (error) {
         res.status(500).json({success: false, message: 'Failed to update folder.'});
@@ -42,7 +42,7 @@ export const updateFolder = async (req: Request, res: Response) => {
 // 4. 폴더 삭제
 export const deleteFolder = async (req: Request, res: Response) => {
     try {
-        await folderService.deleteFolder(req.params.id);
+        await folderService.deleteFolder(req.params.id as string);
         res.status(204).send();
     } catch (error) {
         res.status(500).json({success: false, message: 'Failed to delete folder.'});

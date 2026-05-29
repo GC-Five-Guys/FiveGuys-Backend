@@ -19,7 +19,14 @@ export const signup = async (userData: any) => {
     // 4. 가입 환영 토큰 발급
     const token = jwt.sign({ id:newUser._id }, JWT_SECRET, { expiresIn: '7d' });
     // 비밀번호를 제외하고 리턴
-    return { user: { email: newUser.email, display_name: newUser.display_name }, token };
+    return { 
+        user: { 
+            email: newUser.email, 
+            display_name: newUser.display_name,
+            created_at: newUser.created_at.toISOString() // 💡 Date -> string 변환
+        }, 
+        token 
+    };
 };
 export const login = async (email: string, password: string) => {
     // 1. 유저 탐색
@@ -30,5 +37,12 @@ export const login = async (email: string, password: string) => {
     if (!isMatch) throw new Error('UNAUTHORIZED');
     // 3. 일치하면 토큰 발급
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '7d' });
-    return { user: { email: user.email }, token };
+    return { 
+        user: { 
+            email: user.email,
+            display_name: user.display_name,
+            created_at: user.created_at.toISOString() // 💡 Date -> string 변환
+        }, 
+        token 
+    };
 };
