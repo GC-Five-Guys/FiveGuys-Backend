@@ -17,13 +17,13 @@ export const signup = async (userData: any) => {
         password_hash: hashedPassword
     });
     // 4. 가입 환영 토큰 발급
-    const token = jwt.sign({ id:newUser._id }, JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ id: (newUser as any)._id }, JWT_SECRET, { expiresIn: '7d' });
     // 비밀번호를 제외하고 리턴
     return { 
         user: { 
-            email: newUser.email, 
-            display_name: newUser.display_name,
-            created_at: newUser.created_at.toISOString() // 💡 Date -> string 변환
+            email: (newUser as any).email, 
+            display_name: (newUser as any).display_name,
+            created_at: (newUser as any).created_at.toISOString() 
         }, 
         token 
     };
@@ -33,15 +33,15 @@ export const login = async (email: string, password: string) => {
     const user = await userRepository.findUserByEmail(email);
     if (!user) throw new Error('UNAUTHORIZED');
     // 2. 비밀번호 확인
-    const isMatch = await bcrypt.compare(password, user.password_hash);
+    const isMatch = await bcrypt.compare(password, (user as any).password_hash);
     if (!isMatch) throw new Error('UNAUTHORIZED');
     // 3. 일치하면 토큰 발급
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ id: (user as any)._id }, JWT_SECRET, { expiresIn: '7d' });
     return { 
         user: { 
-            email: user.email,
-            display_name: user.display_name,
-            created_at: user.created_at.toISOString() // 💡 Date -> string 변환
+            email: (user as any).email,
+            display_name: (user as any).display_name,
+            created_at: (user as any).created_at.toISOString() 
         }, 
         token 
     };

@@ -18,7 +18,7 @@ export const getFolderTree = async (userId: string) => {
     const tree: any[] = [];
 
     // 1. 모든 폴더에 children 빈 배열을 달아주고, ID를 기준으로 'Map'에 등록
-    folderList.forEach((f) => {
+    folderList.forEach((f: any) => {
         f.children = [];
         map.set(f._id.toString(), f);
     });
