@@ -7,10 +7,10 @@ interface AuthRequest extends Request {
 }
 
 // 1. 노트 생성 컨트롤러
-export const createNote = async (req: AuthRequest, res: Response) => {
+export const createNote = async (req: Request, res: Response) => {
     try {
         const { title, content, date } = req.body;
-        const userId = req.user._id.toString(); // authGuard가 넣어준 진짜 유저 ID
+        const userId = (req as AuthRequest).user._id.toString(); // authGuard가 넣어준 진짜 유저 ID
         
         // Service에게 요청
         const newNote = await noteService.createNote(userId, title, content, date);
@@ -24,10 +24,10 @@ export const createNote = async (req: AuthRequest, res: Response) => {
     }
 };
 // 2. 목록 조회 (날짜 및 폴더 필터링 반영)
-export const getNotes = async (req: AuthRequest, res: Response) => {
+export const getNotes = async (req: Request, res: Response) => {
     try {
         const { date, folder_id } = req.query; 
-        const userId = req.user._id.toString();
+        const userId = (req as AuthRequest).user._id.toString();
 
         const notes = await noteService.getNotes(userId, date as string, folder_id as string);
         res.status(200).json({ success: true, data: notes });

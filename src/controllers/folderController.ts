@@ -9,7 +9,7 @@ interface AuthRequest extends Request {
 export const createFolder = async (req: AuthRequest, res: Response) => {
     try {
         const { name, parent_id, order } = req.body;
-        const userId = req.user._id.toString();
+        const userId = (req as AuthRequest).user._id.toString();
         const newFolder = await folderService.createFolder(userId, name, parent_id, order);
         res.status(201).json({ success: true , data: newFolder });
     } catch (error) {
@@ -18,9 +18,9 @@ export const createFolder = async (req: AuthRequest, res: Response) => {
     }
 };
 // 2. 폴더 조회
-export const getFolder = async (req: AuthRequest, res: Response) => {
+export const getFolder = async (req: Request, res: Response) => {
     try {
-        const userId = req.user._id.toString();
+        const userId = (req as AuthRequest).user._id.toString();
         const tree = await folderService.getFolderTree(userId);
         res.status(200).json({ success: true, data: { tree } });
     } catch (error) {
