@@ -4,7 +4,7 @@ dotenv.config();
 import app from './app';
 import connectDB from './config/db';
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 8080;
 
 // 서버를 띄우기 전에 먼저 DB를 연결.
 connectDB().then(() => {
