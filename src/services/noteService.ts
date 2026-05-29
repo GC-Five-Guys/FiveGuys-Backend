@@ -10,7 +10,7 @@ export const createNote = async (userId: string, title: string, content: string,
     }
 
     const parsed = parseTags(content);
-    const nodes = [
+    const nodes: any[] = [
         ...parsed.mentions.map(label => ({ label, token_type: 'mention', attributes: {} })),
         ...parsed.tags.map(label => ({ label, token_type: 'tag', attributes: {} })),
         ...parsed.objects.map(label => ({ label, token_type: 'object', attributes: {} }))
@@ -36,7 +36,7 @@ export const getNoteDetail = async (id: string) => {
 // 4. 수정하기 (수정 시 Parser 재가동 - 전체 수정 PUT용)
 export  const updateNote = async (id: string, title: string, content: string) => {
     const parsed = parseTags(content);
-    const nodes = [
+    const nodes: any[] = [
         ...parsed.mentions.map(label => ({ label, token_type: 'mention', attributes: {} })),
         ...parsed.tags.map(label => ({ label, token_type: 'tag', attributes: {} })),
         ...parsed.objects.map(label => ({ label, token_type: 'object', attributes: {} }))

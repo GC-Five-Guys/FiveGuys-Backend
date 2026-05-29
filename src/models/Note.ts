@@ -15,7 +15,7 @@ const NodeSchema = new Schema({
 }, { _id: false }); // _id: false는 하위 데이터에 굳이 고유 ID를 부여하지 않겠다는 뜻.
 
 // 2. 메인 규격: '노트' 전체 모양 정의
-const DocumentSchema = new Schema({
+const NoteSchema = new Schema({
     user_id: { type: Schema.Types.ObjectId, required: true, ref: 'User' },  // User 모델을 참조
     folder_id: { type: Schema.Types.ObjectId, default: null, ref: 'Folder' },
     date: { type: String, required: true }, // "YYYY-MM-DD" 포맷
@@ -37,6 +37,6 @@ const DocumentSchema = new Schema({
 });
 
 // 1인 1일 1노트 규칙을 위한 복합 고유 인덱스 설정
-DocumentSchema.index({ user_id: 1, date: 1 }, { unique: true });
+NoteSchema.index({ user_id: 1, date: 1 }, { unique: true });
 
-export const Document = model("Document", DocumentSchema);
+export const Note = model("Note", NoteSchema);
