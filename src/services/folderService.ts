@@ -12,14 +12,13 @@ export const createFolder = async (userId: string, name: string, parent_id?: str
 
 // DB에서 일렬로 가져온 데이터를 중첩된 Tree 구조로 조립
 export const getFolderTree = async (userId: string) => {
-    const folders = await folderRepository.findFoldersByUserId(userId);
-    // Mongoose 문서를 일반 자바스크립트 객체로 변환
-    const folderList = folders.map(f => f.toObject());
+    // 💡 Repository에서 이미 .lean()을 사용하여 순수 JS 객체를 가져옵니다.
+    const folderList: any[] = await folderRepository.findFoldersByUserId(userId);
     const map = new Map();
     const tree: any[] = [];
 
     // 1. 모든 폴더에 children 빈 배열을 달아주고, ID를 기준으로 'Map'에 등록
-    folderList.forEach((f: any) => {
+    folderList.forEach((f) => {
         f.children = [];
         map.set(f._id.toString(), f);
     });
