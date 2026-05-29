@@ -11,3 +11,5 @@ yarn-error.log*
 
 # Mac OS 시스템 파일 (팀원이 맥북을 쓸 경우를 대비)
 .DS_Store
+
+.env
